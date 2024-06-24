@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Mim</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #main-header {
+            background-color: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77aaff 3px solid;
+        }
+        #main-header h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            background: #fff;
+            margin-top: 20px;
+        }
+        .photo-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .photo-top img {
+            margin: 0 10px;
+            border-radius: 10px;
+            width: 200px;
+            height: auto;
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 200px;
+            height: auto;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .photo {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-basis: 45%;
+        }
+        .gallery img {
+            border-radius: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            height: auto;
+            max-width: 250px;
+            max-height: 200px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <h1>Sobre Mim</h1>
+    </header>
+    <div class="container">
+        <div class="content">
+            <div class="photo-top">
+                <img src="samir.jpg" class="profile-pic" alt="Foto 1">
+                <img src="samir_avatar.jpg" alt="Foto avatar">
+            </div>
+            <h2>Olá, meu nome é Samir Araújo dos Santos!</h2>
+            <h3>Profissionalmente</h3>
+            <p>
+                Atuo como engenheiro de dados junior em uma consultoria de dados e atuo no time <a href="https://en.wikipedia.org/wiki/Center_of_excellence#:~:text=A%20center%20of%20excellence%20(COE,training%20for%20a%20focus%20area." target="_blank">COE</a> da Sulamérica, atuando próximo do time de Arquitetura de Soluções Analytics.
+            </p>
+            <p>
+                Possuo diversas certificações Cloud, como Professional ML Engineer e Professional Database Engineer da Google Cloud. Para me conhecer mais, acesse meu <a href="https://www.linkedin.com/in/samir-ara%C3%BAjo-33320b1b1/" target="_blank">LinkedIn</a>
+            </p>
+            <h3>Como Estudante</h3>
+            <p>Eu curso Engenharia de IAR na UFABC, já sendo graduado no Bacharelado Interdisciplinar de Ciência e Tecnologia. Apesar da graduação completa estar prevista para o fim de 2025, o fim dos estudos ainda está longe de acabar por causa da minha grande paixão por engenharia e pelo mundo de dados e inteligência artificial.
+            Em meu trabalho de graduação pretendo unir o mundo da engenharia, dados, cloud e machine learning para fornecer mais valor e maiores capacidades a aplicações de engenharia.
+            </p>
+            <h3>Interesses Pessoais</h3>
+            <p>
+                Nos tempos livres gosto de passeios ao ar livre, como em parques bem cuidados, jogar alguns jogos no computador, tomar uma cerveja e conversar com amigos. Adoro filmes e séries de terror, suspense e ação. Minha série preferida é "Dark", produzida pela Netflix. Também gosto de assistir vídeos e live streams pelo computador e de ler sobre assuntos de tecnologia.
+            </p>
+            <div class="gallery">
+                <div class="photo">
+                    <img src="wildlands.jpg" alt="Foto 2">
+                    <p class="description">Jogo Tom Clancy's Ghost Recon Wildlands, que estou jogando bastante ultimamente.</p>
+                </div>
+                <div class="photo">
+                    <img src="ibirapuera.jpg" alt="Foto 3">
+                    <p class="description">Parque Ibirapuera de SP. Um lugar ótimo para passeios a pé e com bicicletas.</p>
+                </div>
+                <div class="photo">
+                    <img src="dark.jpg" alt="Foto 4">
+                    <p class="description">Série DARK produzida pela NETFLIX, recomendo a todos.</p>
+                </div>
+                <div class="photo">
+                    <img src="ghostland.jpg" alt="Foto 5">
+                    <p class="description">Filme Ghostland lançado em 2018. Filme de terror e suspense que me surpreendeu muito.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Copyright &copy; 2024. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
