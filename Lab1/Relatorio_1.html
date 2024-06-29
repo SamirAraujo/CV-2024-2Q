@@ -1,0 +1,47 @@
+<html>
+	<head>
+		Relatório 1 de Visão Computacional
+	</head>
+	<body>
+		<h2>Parte 1</h2>
+		<h3>A)</h3>
+		<p>
+			O segundo argumento do método 'cv.imread' define a forma que
+			 a imagem será apresentada, no caso '0', que significa tons 
+			 de cinza (cv2.IMREAD_GREYSCALE)
+		</p>
+		<h3>B)</h3>
+		<p>
+			A velocidade do vídeo é controlada pela função time.sleep onde 
+			o seu argumento, que é um valor decimal, representa o tempo
+			entre cada frame, ou seja, quanto menor o valor do argumento mais
+			rápido o vídeo executará. 
+		</p>
+		<h3>C)</h3>
+		<p>
+			Dado o código fornecido, L1_3_webcam.py, incluímos uma 
+			condição dentro do laço de repetição.<br><br>
+			if cv.waitKey(1) == ord('x'):<br>
+			&emsp;cv.imwrite('foto1.png',frame)<br>
+			&emsp;time.sleep(1)<br><br>
+			Esta condição verifica quando a tecla 'x' é pressionada e então
+			salva o frame como imagem com o nome 'foto1.png'.
+		</p>
+		<h3>D)</h3>
+		<p>
+			Para rotacionar a imagem e deixá-la de forma 'normal' removemos a função
+			'cv.flip'.<br>
+			E para ajustar a velocidade do vídeo alteramos o valor da variável 'fps'
+			de 10 para 30.
+		</p>
+		
+		<h2>Parte 1</h2>
+		<h3>A)</h3>
+		<img src='foto1.png'>
+
+		
+		<h3>Equipe:</h3>
+		<p>Vinicius Amadeu de Lima RA 11201720392<p>
+		<p>Fabiano Fernandes de Avelar RA 11201721096<p>
+	</body>
+</html>
