@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown to HTML</title>
+    <title>Relatório 1</title>
     <style>
         pre code {
             display: block;
@@ -16,6 +16,31 @@
         .python code {
             color: #005cc5;
             font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+        .photo {
+        text-align: center;
+        margin-bottom: 10px;
+        flex-basis: 45%;
+        }
+        .photo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .photo.small img {
+            width: 25%; 
+        }
+
+        .photo.medium img {
+            width: 50%; 
+        }
+
+        .photo.large img {
+            width: 75%; 
+        }
+
+        .photo.full img {
+            width: 100%;
         }
     </style>
 </head>
@@ -68,5 +93,22 @@ if k == ord('x'):
     k = cv.waitKey(1) 
     if k == ord('q'):
         break</code></pre>
+    <hr>
+    <h2>A seguir as foto dos membros do grupo e a foto dos seus avatares</h2>
+    <div class="photo medium">
+        <img src="fotos_unificadas.jpg" alt="fotos_unificadas">
+        <p class="description">fotos unificadas.</p>
+    </div>
+
+    <h2>A seguir dos avatares dos membros do grupo</h2>
+    <div class="photo medium">
+        <img src="foto_avatares_unificados.jpg" alt="avatares_unificados">
+        <p class="description">avatares unificados.</p>
+    </div>
+
+    <h2>A seguir os vídeos de objetos lentos e rapidos</h2>
+
+    <h2>A seguir os vídeos lento e rápido dos membros do grupo</h2>
+    
 </body>
 </html>
