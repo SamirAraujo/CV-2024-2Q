@@ -1,47 +1,67 @@
-<html>
-	<head>
-		Relatório 1 de Visão Computacional
-	</head>
-	<body>
-		<h2>Parte 1</h2>
-		<h3>A)</h3>
-		<p>
-			O segundo argumento do método 'cv.imread' define a forma que
-			 a imagem será apresentada, no caso '0', que significa tons 
-			 de cinza (cv2.IMREAD_GREYSCALE)
-		</p>
-		<h3>B)</h3>
-		<p>
-			A velocidade do vídeo é controlada pela função time.sleep onde 
-			o seu argumento, que é um valor decimal, representa o tempo
-			entre cada frame, ou seja, quanto menor o valor do argumento mais
-			rápido o vídeo executará. 
-		</p>
-		<h3>C)</h3>
-		<p>
-			Dado o código fornecido, L1_3_webcam.py, incluímos uma 
-			condição dentro do laço de repetição.<br><br>
-			if cv.waitKey(1) == ord('x'):<br>
-			&emsp;cv.imwrite('foto1.png',frame)<br>
-			&emsp;time.sleep(1)<br><br>
-			Esta condição verifica quando a tecla 'x' é pressionada e então
-			salva o frame como imagem com o nome 'foto1.png'.
-		</p>
-		<h3>D)</h3>
-		<p>
-			Para rotacionar a imagem e deixá-la de forma 'normal' removemos a função
-			'cv.flip'.<br>
-			E para ajustar a velocidade do vídeo alteramos o valor da variável 'fps'
-			de 10 para 30.
-		</p>
-		
-		<h2>Parte 1</h2>
-		<h3>A)</h3>
-		<img src='foto1.png'>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to HTML</title>
+    <style>
+        pre code {
+            display: block;
+            padding: 1em;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .python code {
+            color: #005cc5;
+            font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>QUESTÕES</h1>
 
-		
-		<h3>Equipe:</h3>
-		<p>Vinicius Amadeu de Lima RA 11201720392<p>
-		<p>Fabiano Fernandes de Avelar RA 11201721096<p>
-	</body>
+    <h2>Por que a janela aberta não mostra a imagem colorida? L1_1</h2>
+    <p>R: A janela não mostra a imagem colorida, O segundo argumento do método 'cv.imread' define a forma que a imagem será apresentada, no caso '0', que significa tons de cinza (cv2.IMREAD_GREYSCALE)</p>
+    <hr>
+    <h2>Modifique o programa para que as imagens sejam exibidas mais rápidamente e depois para que sejam exibidas mais lentamente. Responda: qual a explicação de alteração de velocidade de exibição, e apresente suas soluções detalhadamente. L1_2</h2>
+    <p>Para alterar a velocidade de exibição, podemos alterar a taxa de frames por segundo(FPS) que são reproduzidos. Assim, para conseguirmos executar o video mais rapidamente, isto é, com maior taxa de frames por segundo, podemos alterar o trecho de codigo responsável por isso. A solução a seguir apresenta a taxa de um frame a cada 40ms, isto é, 25 FPS.</p>
+    <pre class="python"><code>time.sleep(1/25.0)</code></pre>
+    <p>O comando a seguir reproduzirá o video com taxa de 1 frame a cada 1ms, isto é, 1000 FPS. Assim, o video é reproduzido mais rapidamente</p>
+    <pre class="python"><code>time.sleep(1/1000.0)</code></pre>
+    <p>Porém o comando a seguir reproduzir o video com taxa de 1 frame a cada 100ms, isto é, 10 FPS. Assim, o vídeo é reproduzido mais lentamente</p>
+    <pre class="python"><code>time.sleep(1/10.0)</code></pre>
+    <hr>
+    <h2>Modifique o programa para que uma imagem da câmera seja salva num arquivo “foto1.png” no momento em que for clicada a tecla ‘x’ no teclado. Apresente o resultado e sua solução detalhadamente. L1_3</h2>
+    <p>Os comandos a seguir executam a operação de terminar a gravação do vídeo ao apertar a tecla <code>q</code> ou salvar em formato .ppg a foto do frame no momento em que a tecla <code>x</code>. O restante do programa original foi mantido.</p>
+    <pre class="python"><code>k = cv.waitKey(1)
+
+if k == ord('q'):
+    break
+
+if k == ord('x'):
+    cv.imwrite('foto1.png', frame)
+    print("Foto tirada com sucesso!")</code></pre>
+    <hr>
+    <h2>Modifique o programa para que as imagens gravadas estejam “normais” no arquivo de video salvo, e apresentem uma velocidade de exibição adequada. Apresente o resultado e sua solução detalhadamente. L1_4</h2>
+    <p>Para atingir o objetivo proposto foi modificados apenas algumas linhas do código. Primeiramente a linha onde o FPS é informado foi alterada, para a variável <code>fps</code> conter 60. E, também foi comentada a linha que fazia com que o video gerado fosse gerado de maneira "flipada". A seguir está como foram definidas as novas linhas de código.</p>
+    <pre class="python"><code>fps = 60
+#frame = cv.flip(frame, 0)</code></pre>
+    <hr>
+    <h2>Se for necessário alterar a imagem, ou seja realizando alguma operação de procesamento nela, em que ponto dos quatro programas estudados isso deve ser realizado?</h2>
+    <p>Para realizar modificações na imagem, o ponto correto do código a inserir elas é no trecho a seguir. O trecho a seguir é o loop While, que é executado enquando o video estiver sendo gravado sem erros.</p>
+    <pre class="python"><code>while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    # frame = cv.flip(frame, 0)
+    # write the flipped frame
+    out.write(frame)
+    cv.imshow('frame', frame)
+    k = cv.waitKey(1) 
+    if k == ord('q'):
+        break</code></pre>
+</body>
 </html>
