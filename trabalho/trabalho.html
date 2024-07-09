@@ -18,9 +18,9 @@
             font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
         }
         .photo {
-        text-align: center;
-        margin-bottom: 10px;
-        flex-basis: 45%;
+            text-align: center;
+            margin-bottom: 10px;
+            flex-basis: 45%;
         }
         .video-container {
             display: flex;
@@ -28,34 +28,28 @@
             justify-content: center;
             gap: 20px;
         }
-        .photo img .video video {
+        .photo img, .video video {
             max-width: 100%;
             height: auto;
         }
-
         .photo.small img {
             width: 25%; 
         }
-
         .photo.medium img {
             width: 50%; 
         }
-
         .photo.large img {
             width: 75%; 
         }
-
         .photo.full img {
             width: 100%;
         }
-
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
         }
-
         .texto-formatado {
             width: 80%;
             margin: 0 auto;
@@ -64,29 +58,57 @@
             word-wrap: break-word;
             hyphens: auto;
         }
-
         p {
             margin: 10px;
-        }   
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
-	<h1>EQUIPE</h1>
-	<p><b>SAMIR ARAUJO DOS SANTOS</b> - <u>11201811826</u></p>
-	<p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
-	<p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
+    <h1>EQUIPE</h1>
+    <p><b>SAMIR ARAUJO DOS SANTOS</b> - <u>11201811826</u></p>
+    <p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
+    <p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
     
-    <div class="texto-formatado"></div>
+    <div class="texto-formatado">
         <h2>Contexto e Cenário de Aplicação (CA)</h2>
         <p>
-            A marcação de ponto, com o uso de cartões magnéticos ou biometria digital, embora eficaz, apresenta limitações em 
-            termos de segurança, precisão e conveniência. Dessa forma a utilização de um sistema de reconhecimento facial promete 
-            superar essas barreiras, oferecendo uma solução mais eficiente e confiável. A capacidade de identificar e verificar a 
-            identidade de um funcionário com base em suas características faciais não apenas simplifica o processo de registro de 
-            presença, mas também reduz a possibilidade de fraudes e erros.
+            A marcação de ponto, com o uso de cartões magnéticos ou biometria digital, embora eficaz, apresenta limitações em termos de segurança, precisão e conveniência. 
+            Dessa forma, a utilização de um sistema de reconhecimento facial cresceu muito nos últimos anos e supera essas barreiras, oferecendo uma solução mais confortável, eficiente e confiável, não só nessa aplicação, mas também em diversas outras.
+            Por exemplo, a capacidade de identificar e verificar a identidade de um funcionário com base em suas características faciais não apenas simplifica o processo de registro de presença, mas também reduz a possibilidade de fraudes e erros.
+            Além disso, o sistema de reconhecimento facial pode ser integrado a diversos processos e dispositivos, ampliando suas aplicações.
+            Outro exemplo, o reconhecimento facial pode acionar a abertura de portas, ativar computadores, registrar entrada e saída de funcionários em sistemas de ponto eletrônico e até mesmo personalizar ambientes de trabalho ajustando configurações de acordo com o usuário identificado.
+            Em ambientes de alta segurança, como instalações governamentais ou laboratórios de pesquisa, a identificação facial pode ser utilizada em conjunto com outros métodos de autenticação para reforçar ainda mais a segurança.
+            Esse projeto visa desenvolver um sistema robusto de identificação facial que, ao reconhecer uma pessoa, possa acionar algum de diversos processos possíveis e implementáveis, sejam eles controlados por hardware (como travas eletrônicas e sistemas de iluminação) ou por software (como a autenticação em sistemas internos e o envio de notificações).
+            Assim, é esperado não apenas melhorar a segurança e a eficiência operacional, mas também proporcionar uma experiência mais conveniente e personalizada para os usuários e empresas.
         </p>
         <hr>
+        <h3>Premissas do Projeto</h3>
+        <ul>
+            <li>As soluções antigas possuem problemas intrínsecos que são mais custosos e complicados de se resolver.</li>
+            <li>O reconhecimento facial é uma solução mais confortável, eficiente e confiável. Sendo escolhida por tais motivos.</li>
+            <li>O processo é melhor em todos os aspectos suficientes que justifiquem sua implementação.</li>
+            <li>Não hávera tentativas de burlar o sistema.</li>
+        </ul>
+        <h3>Restrições do Projeto</h3>
+        <ul>
+            <li>Utilização de câmeras de boa qualidade que consiga capturar imagens faciais com precisão.</li>
+            <li>Disponibilidade de computadores com capacidade suficiente para rodar os códigos e algoritmos de reconhecimento facial.</li>
+            <li>Tempo de dedicação considerado no TPI da disciplina.</li>
+        </ul>
     </div>
-
 </body>
 </html>
