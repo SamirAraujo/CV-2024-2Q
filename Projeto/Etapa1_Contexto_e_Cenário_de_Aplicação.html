@@ -95,7 +95,6 @@
             Esse projeto visa desenvolver um sistema robusto de identificação facial que, ao reconhecer uma pessoa, possa acionar algum de diversos processos possíveis e implementáveis, sejam eles controlados por hardware (como travas eletrônicas e sistemas de iluminação) ou por software (como a autenticação em sistemas internos e o envio de notificações).
             Assim, é esperado não apenas melhorar a segurança e a eficiência operacional, mas também proporcionar uma experiência mais conveniente e personalizada para os usuários e empresas.
         </p>
-        <hr>
         <h3>Premissas do Projeto</h3>
         <ul>
             <li>As soluções antigas possuem problemas intrínsecos que são mais custosos e complicados de se resolver.</li>
@@ -108,6 +107,40 @@
             <li>Utilização de câmeras de boa qualidade que consiga capturar imagens faciais com precisão.</li>
             <li>Disponibilidade de computadores com capacidade suficiente para rodar os códigos e algoritmos de reconhecimento facial.</li>
             <li>Tempo de dedicação considerado no TPI da disciplina.</li>
+        </ul>
+        <hr>
+
+        <h2>Modelagem Funcional do Sistema (MF)</h2>
+        <p>
+            O sistema será composto por módulos que capturam imagens faciais, processam e validam a identidade do funcionário para a marcação de ponto. O fluxo geral do sistema envolve a captura da imagem, processamento e reconhecimento facial e verificação da identidade.
+        </p>
+        <br>
+        <div class="photo large">
+            <img src="diagrama_funcional.png" alt="digrama_funcional">
+            <p class="description">diagrama funcional</p>
+        </div>
+
+        <h3>Captura de Imagem</h3>
+        <ul>
+            <li>Entrada: Imagem capturada através de uma câmera.</li>
+            <li>Saída: Imagem digital capturada.</li>
+            <li>Processamento: A câmera captura a imagem facial do funcionário e então envia a imagem para o módulo de processamento.</li>
+        </ul>
+        <h3>Processamento da Imagem</h3>
+        <ul>
+            <li>Entrada: Imagem digital capturada.</li>
+            <li>Saída: Características faciais extraídas.</li>
+            <li>Processamento: A imagem é processada para detectar e extrair características faciais, como olhos, nariz e boca.</li>
+        </ul>
+        <h3>Validação</h3>
+        <ul>
+            <li>Entrada: Características faciais extraídas.</li>
+            <li>Saída: Resultado da verificação (identificado/não identificado).</li>
+            <li>Processamento: As características faciais são comparadas com um banco de dados de imagens faciais de funcionários registrados. Se uma correspondência é encontrada, a identidade é confirmada.</li>
+        </ul>
+        <h3>Processos Auxiliares</h3>
+        <ul>
+            <li>Antes da implementação, o sistema deve ser treinado com um conjunto de dados de imagens faciais dos funcionários. Este processo envolve o ajuste dos algoritmos de reconhecimento facial para garantir alta precisão.</li>
         </ul>
     </div>
 </body>
