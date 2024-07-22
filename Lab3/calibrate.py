@@ -79,6 +79,26 @@ retS, new_mtxL, distL, new_mtxR, distR, Rot, Trns, Emat, Fmat = cv2.stereoCalibr
                                                           criteria_stereo,
                                                           flags)
 
+print(retS)
+print('------------------------------------')
+print(new_mtxL)
+print('------------------------------------')
+print(distL)
+print('------------------------------------')
+print(new_mtxR)
+print('------------------------------------')
+print(distR)
+print('------------------------------------')
+print(Rot)
+print('------------------------------------')
+print(Trns)
+print('------------------------------------')
+print(Emat)
+print('------------------------------------')
+print(Fmat)
+print('------------------------------------')
+
+
 # Once we know the transformation between the two cameras we can perform stereo rectification
 # StereoRectify function
 rectify_scale= 1 # if 0 image croped, if 1 image not croped
@@ -93,6 +113,11 @@ Left_Stereo_Map= cv2.initUndistortRectifyMap(new_mtxL, distL, rect_l, proj_mat_l
                                              imgL_gray.shape[::-1], cv2.CV_16SC2)
 Right_Stereo_Map= cv2.initUndistortRectifyMap(new_mtxR, distR, rect_r, proj_mat_r,
                                               imgR_gray.shape[::-1], cv2.CV_16SC2)
+
+print(Left_Stereo_Map)
+print('------------------------------------')
+print(Right_Stereo_Map)
+print('------------------------------------')
 
 
 print("Saving paraeters ......")

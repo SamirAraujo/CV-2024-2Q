@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório 1</title>
+    <title>Relatório 2</title>
     <style>
         pre code {
             display: block;
@@ -58,15 +58,7 @@
     <p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
     <p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
 
-    <br />
-
-    <h2>Data de realização: </h2>
-    <h2>Data de publicação: </h2>
-
-    <br />
-
-
-    <h2>Introdução...(completar)</h2>
+    <h2>Introdução</h2>
     <p>
         Foi realizado a calibração de uma câmera utilizando diversas imagens de um tabuleiro de xadrês em posições diferentes <br />
         A partir das fotos foram feitos cálculos para realizar a calibração
@@ -662,15 +654,40 @@
         print(f"Imagens salvas na pasta {output_dir2}.")
     </pre>
 
-    <h2>Análise e discussão dos estudos realizados...(completar)</h2>
-    <p></p>
+    <h2>Análise e discussão dos estudos realizados</h2>
+    <p>Neste relatório, realizamos a calibração de câmeras utilizando um tabuleiro de xadrez, obtendo e analisando diversos parâmetros para avaliar a precisão e a eficácia dos métodos de calibração aplicados. A seguir, apresento uma análise dos resultados obtidos nas diferentes partes do laboratório:</p>
+
+    <h3>Parte 3A</h3>
+    <p>Na Parte 3A, utilizamos o código fornecido para calibrar uma câmera e obtivemos os seguintes resultados:</p>
+    <ul>
+        <li>Matriz da Câmera (K): [[536.07, 0, 342.37], [0, 536.02, 235.53], [0, 0, 1]]</li>
+        <li>Distorsão (Dist): [-0.26509044, -0.04674186, 0.00183301, -0.00031469, 0.25231153]</li>
+        <li>Vetores de Rotação e Translação (Rvecs e Tvecs): Variação considerável devido às diferentes posições e orientações do tabuleiro durante as capturas.</li>
+    </ul>
+
+    <h3>Parte 3B</h3>
+    <p>Na Parte 3B, os resultados foram:</p>
+    <ul>
+        <li>Matriz da Câmera (K): [[681.97214459, 0, 328.63122084], [0, 682.34022002, 237.00506918], [0, 0, 1]]</li>
+        <li>Distorsão (Dist): [0.07773728, -1.09277605, 0.00784512, 0.00006387, 5.19749735]</li>
+        <li>Vetores de Rotação e Translação (Rvecs e Tvecs): Diferenças em relação à Parte 3A, refletindo mudanças nas condições ou configurações da câmera.</li>
+    </ul>
+
+    <h3>Parte 3C</h3>
+    <p>Na Parte 3C, realizamos a calibração usando uma câmera pessoal:</p>
+    <ul>
+        <li>Matriz da Câmera (K): [[1135.11501, 0, 777.03788], [0, 1138.37129, 633.56213], [0, 0, 1]]</li>
+        <li>Distorsão (Dist): [0.07726933, -0.43758116, 0.00139022, 0.00357039, 0.58434254]</li>
+        <li>Vetores de Rotação e Translação (Rvecs e Tvecs): Mesmos tipos de variações observadas anteriormente, mas com valores ajustados para a nova câmera.</li>
+    </ul>
 
 
-    <h2>Conclusão...(completar)</h2>
-    <p></p>
+    <h2>Conclusão</h2>
+    <p>A calibração da câmera foi realizada com sucesso, e os parâmetros obtidos foram utilizados para ajustar as imagens do tabuleiro de xadrez. <br/>
+    A precisão dos cálculos foi confirmada com a visualização das imagens e vídeos resultantes, demonstrando a eficácia do método de calibração empregado.
+    </p>
 
-
-    <h2>Referências indicadas</h2>
+    <h2>Referências utilizadas</h2>
     <p>
         • [1] Geometria da formação de imagens:
         <br />

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório 3</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        pre code {
+            display: block;
+            padding: 1em;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .python code {
+            color: #005cc5;
+            font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+        .photo {
+        text-align: center;
+        margin-bottom: 10px;
+        flex-basis: 45%;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .photo img .video video {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .photo.small img {
+            width: 25%; 
+        }
+
+        .photo.medium img {
+            width: 50%; 
+        }
+
+        .photo.large img {
+            width: 75%; 
+        }
+
+        .photo.full img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Laboratório 3 - Camera Estéreo</h1>
+
+    <h2>EQUIPE</h2>
+    <p><b>SAMIR ARAUJO DOS SANTOS</b> - <u>11201811826</u></p>
+    <p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
+    <p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
+
+    <h2>Introdução</h2>
+    <p>
+    O relatório 3 tem como objetivo explorar e entender os conceitos de Estereoscopia e Geometria Epipolar através do experimento prático com câmeras estéreo. O relatório inclui: <br/>
+    Estudo Teórico: Compreensão dos conceitos de estereoscopia e parâmetros conjuntos de duas câmeras utilizando materiais didáticos e exemplos práticos com OpenCV. <br/>
+    Construção de Câmera Estereoscópica: Montagem de uma câmera estéreo simples utilizando duas webcams, seguindo instruções específicas para garantir a precisão na captura de imagens. <br/>
+    Calibração e Geração de Imagens 3D: Execução de exemplos de calibração e geração de imagens 3D, ajuste dos programas fornecidos, captura de imagens de calibração e gravação de um vídeo 3D anaglifo.
+    Este projeto visa proporcionar uma compreensão prática e teórica dos conceitos envolvidos.
+    </p>
+
+
+    <h2>Procedimentos experimentais (respostas do laboratório)</h2>
+
+    <h3>4B - Parâmetros Necessários para a Calibração de uma Câmera Estéreo</h3>
+    <p>Para a calibração e correção de distorção de uma câmera estéreo, é necessário entender e calcular uma série de parâmetros fundamentais. A calibração é o processo de determinar os parâmetros internos e externos da câmera, enquanto a correção de distorção ajusta a imagem para remover efeitos de distorção ótica. Abaixo estão os principais parâmetros necessários:</p>
+    
+    <h4>Parâmetros Internos (Intrínsecos)</h4>
+
+    <li><strong>Matriz de Câmera (Camera Matrix)</strong></li>
+        <p>\begin{pmatrix} 
+        f_x & 0 & c_x \\ 
+        0 & f_y & c_y \\ 
+        0 & 0 & 1 
+        \end{pmatrix}
+        <li><strong>Coeficientes de Distorção</strong>
+            <ul>
+                <li>Vetor de distorção: \([k_1, k_2, p_1, p_2, k_3]\)</li>
+                <li>\( k_1, k_2, k_3 \): Coeficientes de distorção radial.</li>
+                <li>\( p_1, p_2 \): Coeficientes de distorção tangencial.</li>
+            </ul>
+        </li>
+    <h4>Parâmetros Externos (Extrínsecos)</h4>
+    <ul>
+        <li><strong>Matriz de Rotação (Rotation Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{R}\): Matriz 3x3 que descreve a rotação da segunda câmera em relação à primeira câmera.</li>
+            </ul>
+        </li>
+        <li><strong>Vetor de Translação (Translation Vector)</strong>
+            <ul>
+                <li>\(\mathbf{T}\): Vetor 3x1 que descreve a translação da segunda câmera em relação à primeira câmera.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h4>Parâmetros da Câmera Estéreo</h4>
+    <ul>
+        <li><strong>Matriz Essencial (Essential Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{E}\): Combina a matriz de rotação e o vetor de translação, usada para calcular a geometria epipolar.</li>
+            </ul>
+        </li>
+        <li><strong>Matriz Fundamental (Fundamental Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{F}\): Relaciona os pontos correspondentes nas duas imagens estéreo, independente dos parâmetros internos das câmeras.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h4>Procedimento de Calibração</h4>
+    <ol>
+        <li><strong>Captura de Imagens de Calibração</strong>
+            <p>Obtenção de múltiplas imagens de um padrão conhecido (como um tabuleiro de xadrez) a partir de diferentes ângulos e posições.</p>
+        </li>
+        <li><strong>Detecção de Pontos de Calibração</strong>
+            <p>Identificação dos pontos de interesse nas imagens de calibração.</p>
+        </li>
+        <li><strong>Calibração da Câmera</strong>
+            <p>Uso dos pontos de calibração para calcular os parâmetros intrínsecos e extrínsecos.</p>
+        </li>
+        <li><strong>Correção de Distorção</strong>
+            <p>Aplicação dos coeficientes de distorção para ajustar a imagem e remover a distorção ótica.</p>
+        </li>
+    </ol>
+
+    <h3>4C - parâmetros e valores obtidos da câmera</h3>
+    <div>
+
+        <p id="camera-matrix-left"> 
+            \[
+            \mathbf{K_L} = \begin{pmatrix}
+            f_{xL} & 0 & c_{xL} \\
+            0 & f_{yL} & c_{yL} \\
+            0 & 0 & 1
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>Coeficientes de Distorção</h4>
+        <p id="distortion-coeffs-left">
+            \[
+            \mathbf{dist_L} = [k_{1L}, k_{2L}, p_{1L}, p_{2L}, k_{3L}]
+            \]
+        </p>
+    
+        <h2>2. Parâmetros da Câmera Direita</h2>
+        <h4>Matriz de Câmera (Camera Matrix)</h4>
+        <p id="camera-matrix-right"> 
+            \[
+            \mathbf{K_R} = \begin{pmatrix}
+            f_{xR} & 0 & c_{xR} \\
+            0 & f_{yR} & c_{yR} \\
+            0 & 0 & 1
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>Coeficientes de Distorção</h4>
+        <p id="distortion-coeffs-right">
+            \[
+            \mathbf{dist_R} = [k_{1R}, k_{2R}, p_{1R}, p_{2R}, k_{3R}]
+            \]
+        </p>
+    
+        <h2>3. Parâmetros de Calibração Estéreo</h2>
+        <h4>Matriz de Rotação (Rotation Matrix)</h4>
+        <p id="rotation-matrix">
+            \[
+            \mathbf{R} = \begin{pmatrix}
+            r_{11} & r_{12} & r_{13} \\
+            r_{21} & r_{22} & r_{23} \\
+            r_{31} & r_{32} & r_{33}
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>Vetor de Translação (Translation Vector)</h4>
+        <p id="translation-vector">
+            \[
+            \mathbf{T} = \begin{pmatrix}
+            t_x \\
+            t_y \\
+            t_z
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>Matriz Essencial (Essential Matrix)</h4>
+        <p id="essential-matrix">
+            \[
+            \mathbf{E} = \begin{pmatrix}
+            e_{11} & e_{12} & e_{13} \\
+            e_{21} & e_{22} & e_{23} \\
+            e_{31} & e_{32} & e_{33}
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>Matriz Fundamental (Fundamental Matrix)</h4>
+        <p id="fundamental-matrix">
+            \[
+            \mathbf{F} = \begin{pmatrix}
+            f_{11} & f_{12} & f_{13} \\
+            f_{21} & f_{22} & f_{23} \\
+            f_{31} & f_{32} & f_{33}
+            \end{pmatrix}
+            \]
+        </p>
+    
+        <h2>Parâmetros de Retificação Obtidos</h2>
+    
+        <h4>Mapas de Retificação (Rectification Maps)</h4>
+        <p id="rectification-maps-left">
+            <strong>Mapa de Retificação da Câmera Esquerda</strong><br>
+            \[\text{Left\_Stereo\_Map}_x\]
+            \[\text{Left\_Stereo\_Map}_y\]
+        </p>
+        <p id="rectification-maps-right">
+            <strong>Mapa de Retificação da Câmera Direita</strong><br>
+            \[
+            \text{Right\_Stereo\_Map}_x
+            \]
+            \[
+            \text{Right\_Stereo\_Map}_y
+            \]
+        </p>
+        <h4>1.1. Matriz de Câmera Esquerda (Camera Matrix Left)</h4>
+        <p id="camera-matrix-left"> 
+            \[
+            \mathbf{K_L} = \begin{pmatrix}
+            785.46556164 & 0 & 311.3210446 \\
+            0 & 778.43749633 & 193.23014174 \\
+            0 & 0 & 1
+            \end{pmatrix}
+            \]
+        </p>
+    
+        <h4>1.2. Coeficientes de Distorção (Distortion Coefficients Left)</h4>
+        <p id="distortion-coeffs-left">
+            \[
+            \mathbf{dist_L} = [0.06985802, -0.23881017, -0.00558771, -0.00179497, 1.20333491]
+            \]
+        </p>
+    
+        <h4>1.3. Matriz de Câmera Direita (Camera Matrix Right)</h4>
+        <p id="camera-matrix-right"> 
+            \[
+            \mathbf{K_R} = \begin{pmatrix}
+            939.438833 & 0 & 339.29977306 \\
+            0 & 928.73994069 & 154.02424247 \\
+            0 & 0 & 1
+            \end{pmatrix}
+            \]
+        </p>
+    
+        <h4>1.4. Coeficientes de Distorção (Distortion Coefficients Right)</h4>
+        <p id="distortion-coeffs-right">
+            \[
+            \mathbf{dist_R} = [0.15094857, -0.67853287, -0.01475336, 0.01015366, 1.73951149]
+            \]
+        </p>
+    
+        <h4>1.5. Matriz de Rotação (Rotation Matrix)</h4>
+        <p id="rotation-matrix">
+            \[
+            \mathbf{R} = \begin{pmatrix}
+            0.99813562 & -0.05163242 & -0.03254794 \\
+            0.05172279 & 0.9986596 & 0.00194013 \\
+            0.03240414 & -0.00361999 & 0.99946829
+            \end{pmatrix}
+            \]
+        </p>
+    
+        <h4>1.6. Vetor de Translação (Translation Vector)</h4>
+        <p id="translation-vector">
+            \[
+            \mathbf{T} = \begin{pmatrix}
+            -2.4978983 \\
+            0.23101032 \\
+            3.6308132
+            \end{pmatrix}
+            \]
+        </p>
+    
+        <h4>1.7. Matriz Essencial (Essential Matrix)</h4>
+        <p id="essential-matrix">
+            \[
+            \mathbf{E} = \begin{pmatrix}
+            -0.180310101 & -3.62678270 & 0.223843226 \\
+            3.70498625 & -0.196510033 & 2.37839465 \\
+            -0.359777897 & -2.48262248 & 0.002672655
+            \end{pmatrix}
+            \]
+        </p>
+        <h4>1.8. Matriz fundamental (Fundamental Matrix)</h4>
+        <p id="fundamental-matrix">
+            \[
+            \mathbf{F} = \begin{pmatrix}
+            -1.43128325e-06 & -2.90489521e-05 & 7.45437210e-03 \\
+            2.97485991e-05 & -1.59209159e-06 & 6.04626575e-03 \\
+            -6.77929628e-03 & -8.57896058e-03 & 1.00000000e+00
+            \end{pmatrix}
+            \]
+        </p>
+
+
+
+    </div>
+
+    <h2>Análise e discussão dos estudos realizados</h2>
+
+    <p></p>
+
+
+    <h2>Conclusão</h2>
+    <p></p>
+
+
+    <h2>Referências indicadas</h2>
+    <p>
+        • [1] Geometria da formação de imagens:
+        <br />
+        <a href="https://learnopencv.com/geometry-of-image-formation/">https://learnopencv.com/geometry-of-image-formation/</a>
+        <br /><br />
+        • [2] Calibração de Camera com OpenCV:
+        <br />
+        <a href="https://learnopencv.com/camera-calibration-using-opencv/">https://learnopencv.com/camera-calibration-using-opencv/</a>
+        <br /><br />
+        • [3] Camera Calibration. Atenção à parte de Distorção Radial da Lentes:
+        <br />
+        <a href="https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html">https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html</a>
+        <br /><br />
+        • [4] Camera Calibration Toolbox for Matlab:
+        <br />
+        <a href="http://robots.stanford.edu/cs223b04/JeanYvesCalib/">http://robots.stanford.edu/cs223b04/JeanYvesCalib/</a>
+        <br /><br />
+        • [5] Pinhole camera model:
+        <br />
+        <a href="https://en.wikipedia.org/wiki/Pinhole_camera_model">https://en.wikipedia.org/wiki/Pinhole_camera_model</a>
+    </p>
+</body>
+</html>
