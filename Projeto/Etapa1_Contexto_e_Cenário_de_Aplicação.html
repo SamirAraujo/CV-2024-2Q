@@ -75,35 +75,85 @@
         li {
             margin-bottom: 5px;
         }
+        .container-nomes {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: auto;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+        .name {
+            flex: 3;
+            text-align: left;
+        }
+        .number {
+            flex: 1;
+            text-align: left;
+        }
+        .content {
+            text-align: center;
+            max-width: 800px;
+            margin: auto;
+        }
+        .content h1 {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>EQUIPE</h1>
-    <p><b>SAMIR ARAUJO DOS SANTOS</b> - <u>11201811826</u></p>
-    <p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
-    <p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
+    <div class="content">
+        <h1>Identificação facial para registro de prença em sala de aula</h1>
+    </div>
+
+    <div class="container-nomes">
+        <div class="item">
+            <div class="name"><b>SAMIR ARAUJO DOS SANTOS</b></div>
+            <div class="number"><u>11201811826</u></div>
+        </div>
+        <div class="item">
+            <div class="name"><b>FABIANO FERNANDES DE AVELAR</b></div>
+            <div class="number"><u>11201721096</u></div>
+        </div>
+        <div class="item">
+            <div class="name"><b>VINICIUS AMADEU DE LIMA</b></div>
+            <div class="number"><u>11201720392</u></div>
+        </div>
+    </div>
     
     <div class="texto-formatado">
         <h2>Contexto e Cenário de Aplicação (CA)</h2>
         <p>
-            A marcação de ponto, com o uso de cartões magnéticos ou biometria digital, embora eficaz, apresenta limitações em termos de segurança, precisão e conveniência. 
-            Dessa forma, a utilização de um sistema de reconhecimento facial cresceu muito nos últimos anos e supera essas barreiras, oferecendo uma solução mais confortável, eficiente e confiável, não só nessa aplicação, mas também em diversas outras.
-            Por exemplo, a capacidade de identificar e verificar a identidade de um funcionário com base em suas características faciais não apenas simplifica o processo de registro de presença, mas também reduz a possibilidade de fraudes e erros.
-            Além disso, o sistema de reconhecimento facial pode ser integrado a diversos processos e dispositivos, ampliando suas aplicações.
-            Outro exemplo, o reconhecimento facial pode acionar a abertura de portas, ativar computadores, registrar entrada e saída de funcionários em sistemas de ponto eletrônico e até mesmo personalizar ambientes de trabalho ajustando configurações de acordo com o usuário identificado.
-            Em ambientes de alta segurança, como instalações governamentais ou laboratórios de pesquisa, a identificação facial pode ser utilizada em conjunto com outros métodos de autenticação para reforçar ainda mais a segurança.
-            Esse projeto visa desenvolver um sistema robusto de identificação facial que, ao reconhecer uma pessoa, possa acionar algum de diversos processos possíveis e implementáveis, sejam eles controlados por hardware (como travas eletrônicas e sistemas de iluminação) ou por software (como a autenticação em sistemas internos e o envio de notificações).
-            Assim, é esperado não apenas melhorar a segurança e a eficiência operacional, mas também proporcionar uma experiência mais conveniente e personalizada para os usuários e empresas.
+            A tecnologia de reconhecimento facial tem se tornado uma ferramenta poderosa e versátil em diversas áreas, desde 
+            segurança e autenticação até interação homem-máquina. No contexto educacional, o reconhecimento facial apresenta 
+            um potencial significativo para aprimorar a eficiência e a precisão do registro de presença em sala de aula, 
+            substituindo os métodos tradicionais que são frequentemente suscetíveis a erros e fraudes além de ser um processo moroso, 
+            que gasta tempo de aula em um procedimento burocrático.
         </p>
+        <p>
+            O registro de presença é uma prática essencial em instituições educacionais, pois garante que os alunos estejam 
+            participando ativamente das atividades acadêmicas. Métodos tradicionais, como chamadas manuais ou assinaturas em 
+            folhas de presença, podem ser demorados, interrompendo o fluxo da aula e proporcionando oportunidades para marcações 
+            fraudulentas. Além disso, esses métodos exigem um esforço administrativo considerável para processar e manter registros. 
+            A implementação de um sistema automatizado de reconhecimento facial pode resolver muitos desses problemas. 
+            Um sistema desse tipo pode capturar e identificar rostos de forma rápida e precisa, registrando a presença dos alunos 
+            automaticamente. Isso não só economiza tempo, mas também melhora a precisão dos registros e reduz a possibilidade de fraude.
+        </p>
+    
         <h3>Premissas do Projeto</h3>
         <ul>
-            <li>As soluções antigas possuem problemas intrínsecos que são mais custosos e complicados de se resolver.</li>
-            <li>O reconhecimento facial é uma solução mais confortável, eficiente e confiável. Sendo escolhida por tais motivos.</li>
-            <li>O processo é melhor em todos os aspectos suficientes que justifiquem sua implementação.</li>
-            <li>Não hávera tentativas de burlar o sistema.</li>
+            <li>Capturar imagens dos alunos em tempo real utilizando câmeras instaladas na sala de aula.</li>
+            <li>Processar e identificar os rostos dos alunos com alta precisão.</li>
+            <li>Registrar automaticamente a presença dos alunos identificados em um banco de dados.</li>
         </ul>
+
         <h3>Restrições do Projeto</h3>
         <ul>
+            <li>Aluno deve fornecer autorização para utilização de sua imagem.</li>
+            <li>O processo deve ignorar alunos não cadastrados no banco.</li>
             <li>Utilização de câmeras de boa qualidade que consiga capturar imagens faciais com precisão.</li>
             <li>Disponibilidade de computadores com capacidade suficiente para rodar os códigos e algoritmos de reconhecimento facial.</li>
             <li>Tempo de dedicação considerado no TPI da disciplina.</li>
@@ -112,7 +162,10 @@
 
         <h2>Modelagem Funcional do Sistema (MF)</h2>
         <p>
-            O sistema será composto por módulos que capturam imagens faciais, processam e validam a identidade do funcionário para a marcação de ponto. O fluxo geral do sistema envolve a captura da imagem, processamento e reconhecimento facial e verificação da identidade.
+            O sistema será composto por módulos que capturam imagens faciais, processam e validam a identidade do aluno,
+             caso esse esteja cadastrado, e então é realizada a marcação da presença no banco de dados. O fluxo geral do
+              sistema envolve a captura da imagem, processamento, reconhecimento facial, verificação da identidade e marcação no
+              banco de dados.
         </p>
         <br>
         <div class="photo large">
@@ -122,26 +175,47 @@
 
         <h3>Captura de Imagem</h3>
         <ul>
-            <li>Entrada: Imagem capturada através de uma câmera.</li>
-            <li>Saída: Imagem digital capturada.</li>
-            <li>Processamento: A câmera captura a imagem facial do funcionário e então envia a imagem para o módulo de processamento.</li>
+            <li>Entrada: Captura contínua de imagens dos alunos que entram na sala de aula utilizando uma câmera instalada.</li>
+            <li>Saída: Quadros de imagens contendo rostos dos alunos.</li>
+            <li>Processamento: A câmera captura a imagem facial dos alunos e então envia a imagem para o módulo de processamento.</li>
         </ul>
-        <h3>Processamento da Imagem</h3>
+        <h3>Detecção de Rostos</h3>
         <ul>
-            <li>Entrada: Imagem digital capturada.</li>
-            <li>Saída: Características faciais extraídas.</li>
-            <li>Processamento: A imagem é processada para detectar e extrair características faciais, como olhos, nariz e boca.</li>
+            <li>Entrada: Imagens capturadas.</li>
+            <li>Saída: Coordenadas das regiões das imagens que contêm rostos.</li>
+            <li>Processamento: Detecção dos rostos presentes nas imagens capturadas.</li>
         </ul>
-        <h3>Validação</h3>
+        <h3>Pré-processamento de Imagens</h3>
         <ul>
-            <li>Entrada: Características faciais extraídas.</li>
-            <li>Saída: Resultado da verificação (identificado/não identificado).</li>
-            <li>Processamento: As características faciais são comparadas com um banco de dados de imagens faciais de funcionários registrados. Se uma correspondência é encontrada, a identidade é confirmada.</li>
+            <li>Entrada: Imagens contendo rostos.</li>
+            <li>Saída: Imagens de rostos pré-processadas.</li>
+            <li>Processamento: Aplicação de técnicas de pré-processamento nas regiões das imagens que contêm rostos 
+                para melhorar a precisão do reconhecimento.</li>
+        </ul>
+        <h3>Reconhecimento Facial</h3>
+        <ul>
+            <li>Entrada: Imagens de rostos pré-processadas.</li>
+            <li>Saída: Identidades dos alunos reconhecidos.</li>
+            <li>Processamento: Identificação dos rostos detectados comparando-os com um banco de dados de rostos conhecidos
+                 (alunos cadastrados).</li>
+        </ul>
+        <h3>Registro de Presença</h3>
+        <ul>
+            <li>Entrada: Identidades dos alunos reconhecidos.</li>
+            <li>Saída: Atualização do banco de dados de presença.</li>
+            <li>Processamento: Registro automático da presença dos alunos identificados no sistema.</li>
         </ul>
         <h3>Processos Auxiliares</h3>
         <ul>
-            <li>Antes da implementação, o sistema deve ser treinado com um conjunto de dados de imagens faciais dos funcionários. Este processo envolve o ajuste dos algoritmos de reconhecimento facial para garantir alta precisão.</li>
+            <li>Antes da implementação, o sistema deve ser treinado com um conjunto de dados de imagens faciais dos alunos
+                 cadastrados. Este processo envolve o ajuste dos algoritmos de reconhecimento facial para garantir alta precisão.</li>
         </ul>
+
+        <br>
+        <div class="photo large">
+            <img src="diagrama_funcional_02.png" alt="digrama_funcional">
+            <p class="description">diagrama funcional</p>
+        </div>
     </div>
 </body>
 </html>
