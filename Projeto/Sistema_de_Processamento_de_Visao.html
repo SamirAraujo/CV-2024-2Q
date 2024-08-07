@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Implementação de Visão Computacional</title>
+  </head>
+  <body>
+    <h1>Implementação de Visão Computacional</h1>
+    <h2>Introdução</h2>
+    <p>Este relatório detalha a implementação de um sistema de reconhecimento facial utilizando a biblioteca <code>face_recognition</code>, OpenCV ( <code>cv2</code>) e outras bibliotecas de suporte. A visão computacional é um campo da inteligência artificial que permite aos computadores interpretarem e processarem imagens de forma semelhante aos humanos. Neste projeto, aplicamos a visão computacional para detectar e reconhecer rostos em um fluxo de vídeo em tempo real capturado por uma webcam. </p>
+    <h2>Captura de Vídeo</h2>
+    <p>A captura de vídeo é realizada utilizando a biblioteca OpenCV ( <code>cv2</code>). OpenCV é uma biblioteca de visão computacional de código aberto que oferece suporte a uma ampla gama de funções de processamento de imagem e vídeo. Aqui, a função <code>VideoCapture</code> é usada para acessar a webcam do computador: </p>
+    <pre>
+					<code>video_capture = cv2.VideoCapture(0)
+if not video_capture.isOpened():
+    sys.exit('Video source not found...')</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Dispositivos de Captura de Vídeo:</strong>
+        <code>cv2.VideoCapture(0)</code> inicializa a captura de vídeo a partir do dispositivo de vídeo com índice 0, que geralmente é a webcam embutida no computador.
+      </li>
+      <li>
+        <strong>Controle de Exceções:</strong> O método <code>isOpened()</code> verifica se a captura de vídeo foi bem-sucedida. Se a captura falhar, o programa é encerrado usando <code>sys.exit</code>.
+      </li>
+    </ul>
+    <h2>Processamento de Quadros</h2>
+    <p>Os quadros de vídeo são processados para reduzir a carga computacional e melhorar o desempenho. Isso é feito redimensionando os quadros e convertendo-os de BGR para RGB:</p>
+    <pre>
+					<code>small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Redimensionamento de Imagem:</strong>
+        <code>cv2.resize</code> reduz o tamanho do quadro para 25% do seu tamanho original, o que acelera o processamento subsequente sem comprometer significativamente a precisão da detecção facial.
+      </li>
+      <li>
+        <strong>Conversão de Cores:</strong>
+        <code>cv2.cvtColor</code> converte o espaço de cores do quadro de BGR (formato padrão do OpenCV) para RGB (formato esperado pela biblioteca <code>face_recognition</code>).
+      </li>
+    </ul>
+    <h2>Detecção e Codificação de Rostos</h2>
+    <p>A detecção de rostos é realizada usando a função <code>face_locations</code> da biblioteca <code>face_recognition</code>, enquanto a codificação dos rostos é feita usando <code>face_encodings</code>: </p>
+    <pre>
+					<code>self.face_locations = face_recognition.face_locations(rgb_small_frame)
+self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Detecção de Rostos:</strong>
+        <code>face_recognition.face_locations</code> utiliza um modelo de aprendizado profundo treinado para detectar rostos em uma imagem. O modelo retorna as coordenadas dos retângulos delimitadores ao redor dos rostos detectados.
+      </li>
+      <li>
+        <strong>Codificação de Rostos:</strong>
+        <code>face_recognition.face_encodings</code> gera uma representação vetorial (ou "encoding") única para cada rosto detectado, baseada em características faciais. Esta codificação pode ser usada para comparar e identificar rostos.
+      </li>
+    </ul>
+    <h2>Comparação de Rostos</h2>
+    <p>Os rostos detectados são comparados com as codificações de rostos conhecidos para identificar correspondências:</p>
+    <pre>
+					<code>matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, tolerance=0.5)
+face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
+best_match_index = np.argmin(face_distances)</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Comparação de Codificações:</strong>
+        <code>face_recognition.compare_faces</code> compara a codificação do rosto detectado com as codificações dos rostos conhecidos, retornando uma lista de valores booleanos indicando se houve correspondência dentro de uma tolerância especificada.
+      </li>
+      <li>
+        <strong>Distância de Rosto:</strong>
+        <code>face_recognition.face_distance</code> calcula a distância euclidiana entre a codificação do rosto detectado e as codificações dos rostos conhecidos. Distâncias menores indicam maior similaridade.
+      </li>
+      <li>
+        <strong>Melhor Correspondência:</strong>
+        <code>np.argmin(face_distances)</code> encontra o índice da menor distância, identificando a melhor correspondência entre os rostos conhecidos.
+      </li>
+    </ul>
+    <h2>Anotação e Exibição de Resultados</h2>
+    <p>Os resultados são anotados no quadro de vídeo com retângulos e rótulos indicando os nomes dos rostos reconhecidos:</p>
+    <pre>
+					<code>cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), -1)
+cv2.putText(frame, name, (left + 6, bottom - 6), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 255), 1)
+cv2.imshow('Face Recognition', frame)</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Desenho de Retângulos:</strong>
+        <code>cv2.rectangle</code> desenha retângulos ao redor dos rostos reconhecidos. Os retângulos são ampliados para compensar o redimensionamento inicial dos quadros.
+      </li>
+      <li>
+        <strong>Rotulagem de Rostos:</strong>
+        <code>cv2.putText</code> adiciona o nome do rosto reconhecido abaixo do retângulo delimitador.
+      </li>
+      <li>
+        <strong>Exibição de Vídeo:</strong>
+        <code>cv2.imshow</code> exibe o quadro de vídeo anotado em uma janela.
+      </li>
+    </ul>
+    <h2>Encerramento do Sistema</h2>
+    <p>O loop de captura de vídeo é encerrado e os recursos são liberados quando a tecla 'q' é pressionada:</p>
+    <pre>
+					<code>if cv2.waitKey(1) & 0xFF == ord('q'):
+    break
+video_capture.release()
+cv2.destroyAllWindows()</code>
+				</pre>
+    <p>
+      <strong>Explicação:</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>Loop de Captura:</strong>
+        <code>cv2.waitKey(1)</code> aguarda por 1 milissegundo a entrada do teclado. Se a tecla 'q' for pressionada, o loop é encerrado.
+      </li>
+      <li>
+        <strong>Liberação de Recursos:</strong>
+        <code>video_capture.release()</code> libera a captura de vídeo e <code>cv2.destroyAllWindows()</code> fecha todas as janelas do OpenCV, garantindo que todos os recursos sejam liberados adequadamente.
+      </li>
+    </ul>
+  </body>
+</html>

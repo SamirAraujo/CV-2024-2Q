@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <title>Documentação do Projeto de Reconhecimento Facial</title>
+  </head>
+  <body>
+    <h1>Projeto de Reconhecimento Facial</h1>
+    <h2>Visão Geral</h2>
+    <p>Este projeto cria um sistema que reconhece rostos usando uma webcam. Ele captura vídeo, detecta rostos nos quadros do vídeo e os compara com rostos conhecidos armazenados em uma pasta específica.</p>
+    <h2>Itens Requeridos Para Execução</h2>
+    <p>Para executar o código deste projeto em seu computador, você precisará ter o seguinte:</p>
+    <ul>
+      <li>
+        <strong>Python 3.x:</strong> A versão mais recente do Python instalada em seu sistema. Você pode baixá-la no site oficial do Python.
+      </li>
+      <li>
+        <strong>Bibliotecas Necessárias:</strong> As seguintes bibliotecas Python devem ser instaladas. Você pode instalá-las usando o pip: <ul>
+          <li>
+            <code>face_recognition</code> - Biblioteca para reconhecimento facial.
+          </li>
+          <li>
+            <code>os</code> - Biblioteca padrão do Python para interações com o sistema operacional.
+          </li>
+          <li>
+            <code>sys</code> - Biblioteca padrão do Python para manipulação de parâmetros e funções do sistema.
+          </li>
+          <li>
+            <code>cv2 (OpenCV)</code> - Biblioteca para captura e processamento de vídeo.
+          </li>
+          <li>
+            <code>numpy</code> - Biblioteca para operações matemáticas e manipulação de arrays.
+          </li>
+          <li>
+            <code>math</code> - Biblioteca padrão do Python para funções matemáticas.
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Você pode instalar todas as bibliotecas necessárias com o seguinte comando:</p>
+    <pre>
+				<code>pip install face_recognition opencv-python numpy</code>
+			</pre>
+    <h2>Configuração da Pasta</h2>
+    <p>É necessário ter uma pasta criada que contenha imagens dos rostos que você deseja que o sistema reconheça. Cada arquivo de imagem deve ser nomeado com o nome da pessoa na foto.</p>
+    <h2>Componentes Principais</h2>
+    <h3>DIRECTORY</h3>
+    <p>Este é o caminho para a pasta com as imagens dos rostos conhecidos.</p>
+    <h3>face_confidence</h3>
+    <p>Esta função calcula o nível de confiança do sistema de que um rosto detectado corresponde a um rosto conhecido.</p>
+    <p>
+      <strong>Parâmetros:</strong>
+    </p>
+    <ul>
+      <li>
+        <code>face_distance</code>: Quão diferente o rosto detectado é do rosto conhecido.
+      </li>
+      <li>
+        <code>face_match_threshold</code>: O limite para decidir se os rostos correspondem (o padrão é 0.6).
+      </li>
+    </ul>
+    <p>
+      <strong>Retorna:</strong> Nível de confiança como uma string de porcentagem.
+    </p>
+    <h3>Classe FaceRecognition</h3>
+    <p>Esta é a parte principal do sistema que lida com tudo, desde a codificação dos rostos conhecidos até o reconhecimento dos rostos no vídeo.</p>
+    <h4>__init__</h4>
+    <p>Configura o sistema FaceRecognition e o prepara para reconhecer rostos.</p>
+    <p>
+      <strong>Atributos:</strong>
+    </p>
+    <ul>
+      <li>
+        <code>known_face_encodings</code>: Lista de codificações de rostos conhecidos.
+      </li>
+      <li>
+        <code>known_face_names</code>: Lista de nomes correspondentes às codificações de rostos conhecidos.
+      </li>
+      <li>
+        <code>face_locations</code>: Lista de localizações de rostos no quadro de vídeo atual.
+      </li>
+      <li>
+        <code>face_names</code>: Lista de nomes dos rostos reconhecidos no quadro de vídeo atual.
+      </li>
+      <li>
+        <code>process_current_frame</code>: Controla o processamento dos quadros.
+      </li>
+    </ul>
+    <h4>encode_faces</h4>
+    <p>Codifica os rostos das imagens na pasta especificada e armazena as codificações e nomes.</p>
+    <p>
+      <strong>Atributos:</strong>
+    </p>
+    <ul>
+      <li>
+        <code>known_face_encodings</code>: Atualizado com codificações de rostos das imagens.
+      </li>
+      <li>
+        <code>known_face_names</code>: Atualizado com nomes extraídos dos nomes dos arquivos de imagem.
+      </li>
+    </ul>
+    <h4>run_recognition</h4>
+    <p>Captura vídeo da webcam, detecta rostos e os compara com os rostos conhecidos.</p>
+    <p>
+      <strong>Atributos:</strong>
+    </p>
+    <ul>
+      <li>
+        <code>video_capture</code>: Captura vídeo da webcam padrão.
+      </li>
+      <li>
+        <code>frame_count</code>: Contador para o número de quadros processados.
+      </li>
+      <li>
+        <code>frame_skip</code>: Número de quadros a serem ignorados entre o processamento (padrão é 15).
+      </li>
+    </ul>
+    <p>
+      <strong>Métodos:</strong>
+    </p>
+    <ul>
+      <li>Lê quadros da webcam.</li>
+      <li>Redimensiona e converte quadros para detecção de rostos.</li>
+      <li>Detecta e codifica rostos nos quadros.</li>
+      <li>Compara os rostos detectados com os rostos conhecidos.</li>
+      <li>Desenha retângulos e etiquetas ao redor dos rostos reconhecidos nos quadros de vídeo.</li>
+      <li>Exibe os quadros de vídeo com anotações.</li>
+      <li>Encerra o loop e libera os recursos quando 'q' é pressionado.</li>
+    </ul>
+    <h2>Como Usar</h2>
+    <p>Para iniciar o código, basta executar o script. Isso configurará o objeto FaceRecognition, codificará os rostos da pasta e começará a capturar vídeo e reconhecer rostos.</p>
+  </body>
+</html>
