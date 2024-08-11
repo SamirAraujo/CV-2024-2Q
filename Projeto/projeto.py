@@ -4,9 +4,10 @@ import sys
 import cv2
 import numpy as np
 import math
+import csv
+from datetime import datetime
 
-DIRECTORY = 'C:\\Users\\User\\Desktop\\faces'
-
+DIRECTORY = r'C:\Users\User\Desktop\faces'
 def face_confidence(face_distance, face_match_threshold=0.6):
     range_val = (1.0 - face_match_threshold)
     linear_val = (1.0 - face_distance) / (range_val * 2.0)
@@ -24,6 +25,7 @@ class FaceRecognition:
         self.face_locations = []
         self.face_names = []
         self.process_current_frame = True
+        self.identified_names = set()
         self.encode_faces()
 
     def encode_faces(self):
@@ -39,56 +41,81 @@ class FaceRecognition:
 
         print(self.known_face_names)
 
+    def process_frame(self, frame):
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
+        self.face_locations = face_recognition.face_locations(rgb_small_frame)
+        self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)
+
+        self.face_names = []
+        if self.face_encodings:
+            for face_encoding in self.face_encodings:
+                matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, tolerance=0.5)
+                name = "Deconhecido"
+                confidence = "Deconhecido"
+
+                if self.known_face_encodings:
+                    face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
+
+                    if face_distances.size > 0:
+                        best_match_index = np.argmin(face_distances)
+
+                        if matches[best_match_index]:
+                            name = self.known_face_names[best_match_index]
+                            confidence = face_confidence(face_distances[best_match_index])
+
+                        self.face_names.append(f'{name} ({confidence})')
+                        
+                        # Check if the name is not in identified_names and add it
+                        if name not in self.identified_names:
+                            self.identified_names.add(name)
+                            self.write_to_csv(name)
+
+    def write_to_csv(self, name):
+        with open('faces_identificadas.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            writer.writerow([name, date])
+
     def run_recognition(self):
         video_capture = cv2.VideoCapture(0)
 
         if not video_capture.isOpened():
-            sys.exit('Video source not found...')
-
-        frame_count = 0
-        frame_skip = 15
+            sys.exit('fonte de vídeo não encontrada...')
 
         while True:
             ret, frame = video_capture.read()
+
             if not ret:
-                print("Failed to grab frame")
+                print("Falha em recuperar o frame")
                 break
 
-            frame_count += 1
-
-            if frame_count % frame_skip == 0:
-                small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-                rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
-                self.face_locations = face_recognition.face_locations(rgb_small_frame)
-                self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)
-
-                self.face_names = []
-                if self.face_encodings:
-                    for face_encoding in self.face_encodings:
-                        matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, tolerance=0.5)
-                        name = "Unknown"
-                        confidence = "Unknown"
-
-                        if self.known_face_encodings:
-                            face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
-                            if face_distances.size > 0:
-                                best_match_index = np.argmin(face_distances)
-                                if matches[best_match_index]:
-                                    name = self.known_face_names[best_match_index]
-                                    confidence = face_confidence(face_distances[best_match_index])
-                        self.face_names.append(f'{name} ({confidence})')
-
+            self.process_frame(frame)
             for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
                 top *= 4
                 right *= 4
                 bottom *= 4
                 left *= 4
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), -1)
+                if name == 'Desconhecido':
+                    color = (0, 0, 255)
+                else:
+                    if '(' in name and ')' in name:
+                        try:
+                            confidence = float(name.split('(')[-1].split(')')[0].strip('%')) / 100
+                            if confidence > 0.9:
+                                color = (0, 255, 0)
+                            else:
+                                color = (0, 0, 255)
+                        except ValueError:
+                            color = (0, 0, 255)
+                    else:
+                        color = (0, 0, 255)
+
+                cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
+                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), color, -1)
                 cv2.putText(frame, name, (left + 6, bottom - 6), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 255), 1)
 
-            cv2.imshow('Face Recognition', frame)
-
+            cv2.imshow('Reconhecimento de face', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
@@ -96,5 +123,10 @@ class FaceRecognition:
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
+    if not os.path.exists('faces_identificadas.csv'):
+        with open('faces_identificadas.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['nome', 'data'])
+
     fr = FaceRecognition()
     fr.run_recognition()
