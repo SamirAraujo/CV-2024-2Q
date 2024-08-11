@@ -7,7 +7,7 @@ import math
 import csv
 from datetime import datetime
 
-DIRECTORY = r'C:\Users\User\Desktop\faces'
+DIRECTORY = r'C:\Users\User\Desktop\Professional\Cursos e estudos\Projetos extras\cam_person_identification\faces'
 def face_confidence(face_distance, face_match_threshold=0.6):
     range_val = (1.0 - face_match_threshold)
     linear_val = (1.0 - face_distance) / (range_val * 2.0)
@@ -51,8 +51,8 @@ class FaceRecognition:
         if self.face_encodings:
             for face_encoding in self.face_encodings:
                 matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, tolerance=0.5)
-                name = "Deconhecido"
-                confidence = "Deconhecido"
+                name = "Desconhecido"
+                confidence = "Desconhecido"
 
                 if self.known_face_encodings:
                     face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
@@ -65,8 +65,7 @@ class FaceRecognition:
                             confidence = face_confidence(face_distances[best_match_index])
 
                         self.face_names.append(f'{name} ({confidence})')
-                        
-                        # Check if the name is not in identified_names and add it
+
                         if name not in self.identified_names:
                             self.identified_names.add(name)
                             self.write_to_csv(name)
@@ -96,19 +95,14 @@ class FaceRecognition:
                 right *= 4
                 bottom *= 4
                 left *= 4
-                if name == 'Desconhecido':
-                    color = (0, 0, 255)
-                else:
-                    if '(' in name and ')' in name:
-                        try:
-                            confidence = float(name.split('(')[-1].split(')')[0].strip('%')) / 100
-                            if confidence > 0.9:
-                                color = (0, 255, 0)
-                            else:
-                                color = (0, 0, 255)
-                        except ValueError:
+
+                color = (0, 255, 0) 
+                if '(' in name and ')' in name:
+                    try:
+                        confidence = float(name.split('(')[-1].split(')')[0].strip('%')) / 100
+                        if confidence < 0.9:
                             color = (0, 0, 255)
-                    else:
+                    except ValueError:
                         color = (0, 0, 255)
 
                 cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
