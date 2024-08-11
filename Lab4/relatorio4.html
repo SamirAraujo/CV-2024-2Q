@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório 4</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        pre code {
+            display: block;
+            padding: 1em;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .python code {
+            color: #005cc5;
+            font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+        .photo {
+        text-align: center;
+        margin-bottom: 10px;
+        flex-basis: 45%;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .photo img .video video {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .photo.small img {
+            width: 25%; 
+        }
+
+        .photo.medium img {
+            width: 50%; 
+        }
+
+        .photo.large img {
+            width: 75%; 
+        }
+
+        .photo.full img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Laboratório 4 - Depth Map</h1>
+
+    <h2>EQUIPE</h2>
+    <p><b>SAMIR ARAUJO DOS SANTOS</b> - <u>11201811826</u></p>
+    <p><b>FABIANO FERNANDES DE AVELAR</b> - <u>11201721096</u></p>
+    <p><b>VINICIUS AMADEU DE LIMA</b> - <u>11201720392</u></p>
+
+    <h2>Introdução</h2>
+    <p>
+    O relatório 4 tem como objetivo explorar e entender os conceitos de Mapa de Disparidade, Retificação de Imagens, e
+    Mapa de Produndidade.<br>
+    O mapa de disparidade é uma representação visual crucial no campo da visão computacional, especialmente quando se trata 
+    de sistemas de visão estéreo. Ele descreve a diferença de posição de um ponto observado em duas imagens capturadas por 
+    câmeras ligeiramente deslocadas lateralmente. Esta diferença, conhecida como disparidade, é diretamente relacionada à 
+    profundidade ou distância do ponto em relação às câmeras.<br><br>
+    O relatório inclui:<br>
+    <li>Estudo da teoria sobre estereoscopia e parâmetros conjuntos de duas câmeras, e também sobre processo de 
+        mapeamento de disparidade entre duas cameras.</li><br>
+
+    <li>Utilizar a câmera estereoscopica construída na aula anterior para realizar a calibração estereo, executar o algoritmo 
+        Block Matching do OpenCV, sintonizando seus parâmetros, obter o mapa de profundidade pelo processo prático de medida de
+        distância e realizar medidas de distância</li><br>
+    </p>
+
+    <h2>Procedimentos experimentais (respostas do laboratório)</h2>
+
+    <h3>3.I - Calibração de uma Câmera Estéreo</h3>
+
+    <p>
+        Para a calibração e correção de distorção de uma câmera estéreo, é necessário entender e calcular uma série de parâmetros 
+        fundamentais. A calibração é o processo de determinar os parâmetros internos e externos da câmera, enquanto a correção de 
+        distorção ajusta a imagem para remover efeitos de distorção ótica. Abaixo estão os principais parâmetros necessários:
+    </p>
+    
+    <h4>Parâmetros Internos (Intrínsecos)</h4>
+
+    <li><strong>Matriz de Câmera (Camera Matrix)</strong></li>
+        <p>\begin{pmatrix} 
+        f_x & 0 & c_x \\ 
+        0 & f_y & c_y \\ 
+        0 & 0 & 1 
+        \end{pmatrix}
+        <li><strong>Coeficientes de Distorção</strong>
+            <ul>
+                <li>Vetor de distorção: \([k_1, k_2, p_1, p_2, k_3]\)</li>
+                <li>\( k_1, k_2, k_3 \): Coeficientes de distorção radial.</li>
+                <li>\( p_1, p_2 \): Coeficientes de distorção tangencial.</li>
+            </ul>
+        </li>
+    <h4>Parâmetros Externos (Extrínsecos)</h4>
+    <ul>
+        <li><strong>Matriz de Rotação (Rotation Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{R}\): Matriz 3x3 que descreve a rotação da segunda câmera em relação à primeira câmera.</li>
+            </ul>
+        </li>
+        <li><strong>Vetor de Translação (Translation Vector)</strong>
+            <ul>
+                <li>\(\mathbf{T}\): Vetor 3x1 que descreve a translação da segunda câmera em relação à primeira câmera.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h4>Parâmetros da Câmera Estéreo</h4>
+    <ul>
+        <li><strong>Matriz Essencial (Essential Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{E}\): Combina a matriz de rotação e o vetor de translação, usada para calcular a geometria epipolar.</li>
+            </ul>
+        </li>
+        <li><strong>Matriz Fundamental (Fundamental Matrix)</strong>
+            <ul>
+                <li>\(\mathbf{F}\): Relaciona os pontos correspondentes nas duas imagens estéreo, independente dos parâmetros internos das câmeras.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h4>Procedimento de Calibração</h4>
+    <ol>
+        <li><strong>Captura de Imagens de Calibração</strong>
+            <p>Obtenção de múltiplas imagens de um padrão conhecido (como um tabuleiro de xadrez) a partir de diferentes ângulos e posições.</p>
+        </li>
+        <li><strong>Detecção de Pontos de Calibração</strong>
+            <p>Identificação dos pontos de interesse nas imagens de calibração.</p>
+        </li>
+        <li><strong>Calibração da Câmera</strong>
+            <p>Uso dos pontos de calibração para calcular os parâmetros intrínsecos e extrínsecos.</p>
+        </li>
+        <li><strong>Correção de Distorção</strong>
+            <p>Aplicação dos coeficientes de distorção para ajustar a imagem e remover a distorção ótica.</p>
+        </li>
+    </ol>
+
+    <p>
+        Os parametros encontrados na calibração foram salvos no arquivo <a href="./data/params_py.xml">“params_py.xml”</a>, e são usados no próximo procedimento.
+    </p>
+
+    <h3>3.II - Algoritmo Block Matching do OpenCV</h3>
+
+    <p>
+        Em uma configuração de câmera estéreo horizontal, os pontos correspondentes em um par de imagens estéreo retificadas 
+        terão a mesma coordenada Y. Para encontrar esses pontos correspondentes, uma abordagem ingênua seria comparar os valores 
+        dos pixels na mesma linha das duas imagens. No entanto, essa técnica não é robusta, pois diferentes pixels podem ter a mesma 
+        intensidade e, devido a limitações práticas, como diferenças nos sensores de imagem ou valores de exposição, os pixels 
+        correspondentes podem ter valores diferentes.
+    </p>
+
+    <p>
+        Uma abordagem melhor é considerar também os pixels vizinhos. É exatamente isso que o algoritmo de correspondência de blocos 
+        faz. A linha que escaneamos para encontrar correspondência estéreo é chamada de linha de varredura (scanline). Para 
+        quantificar a melhor correspondência, utilizamos métricas como a Soma das Diferenças Absolutas (SAD), Soma das Diferenças 
+        Quadradas (SSD) e Correlação Cruzada Normalizada (NCC). Por exemplo, o par com o menor valor de SAD é a melhor 
+        correspondência, pois a soma das diferenças dos pixels é a menor.
+    </p>
+
+    <p>
+        Ao executar o algoritmo foi gerado o mapa de disparidade que foi salvo no arquivo 
+        <a href="./data/depth_estmation_params_py.xml">“depth_estmation_params_py.xml”</a>, esse mapa é usado no próximo passo.
+    </p>
+
+    <div class="photo small">
+        <img src="imagem_01.png" alt="Disparidade">
+        <p class="description">Mapa de disparidade</p>
+    </div>
+
+    <h3>3.III - Mapa de profundidade</h3>
+
+    <p>
+        Um mapa de profundidade é uma representação em imagem onde cada pixel contém informações sobre a distância entre 
+        a câmera e a superfície dos objetos na cena capturada. Essencialmente, é uma imagem que traduz a profundidade dos 
+        objetos em valores de intensidade de pixel, permitindo a visualização das variações de distância dentro de uma cena.
+    </p>
+
+    <p>
+        O mapa de profundidade pode ser gerado a partir de vários métodos, sendo um dos mais comuns o uso de câmeras estéreo. 
+        A técnica envolve os seguintes passos:
+    </p>
+
+    <ol>
+        <li><strong>Captura de Imagens Estéreo:</strong> Duas imagens da mesma cena são capturadas de posições ligeiramente diferentes (geralmente horizontais).</li>
+        <li><strong>Rectificação das Imagens:</strong> As imagens são alinhadas para que os pares de pontos correspondentes estejam na mesma linha horizontal.</li>
+        <li><strong>Cálculo da Disparidade:</strong> Para cada pixel em uma imagem, o pixel correspondente na outra imagem é identificado. A diferença de posição horizontal entre esses pixels é chamada de disparidade.</li>
+        <li><strong>Conversão da Disparidade em Profundidade:</strong> Usando a relação entre a disparidade e a profundidade, que pode ser descrita pela fórmula:
+            <br><br>
+            \[ Z = \frac{B \cdot f}{x - x'} \]
+            <br>
+            onde:
+            <ul>
+                <li><code>Z</code> é a profundidade (distância do objeto à câmera),</li>
+                <li><code>B</code> é a distância entre as duas câmeras (linha de base),</li>
+                <li><code>f</code> é a distância focal da câmera,</li>
+                <li><code>x - x'</code> é a disparidade (diferença de posição horizontal entre os pixels correspondentes nas duas imagens).</li>
+            </ul>
+        </li>
+    </ol>
+
+    <p>
+        Usando o programa “disparity2depth_calib.py” foi realizado medições de distâncias de 50cm à 170cm com intervalos de 30cm.
+        Como resultado das medições foi gerado gráficos mostrando a relação entre valores de profundidade e disparidade para uma 
+        configuração de câmera estéreo.
+    </p>
+
+    <div class="photo large">
+        <img src="grafico.png" alt="Disparidade">
+        <p class="description">Gráficos mostrando a relação entre valores de profundidade e disparidade para uma configuração 
+            de câmera estéreo</p>
+    </div>
+    
+    <h2>Análise e discussão dos estudos realizados</h2>
+
+    <p>
+        O estudo confirmou a aplicação dos conceitos Mapa de Disparidade, Retificação de Imagens e Mapa de Produndidade na prática. 
+        Embora a calibração tenha sido bem-sucedida, as discrepâncias entre os dados ao vivo e gravados indicam a necessidade de ajustes 
+        adicionais na metodologia. <br>
+        As comparações com a literatura mostraram que os resultados estão alinhados com as expectativas, mas com espaço para 
+        aprimoramentos na precisão. <br>
+        São necesários ajustes no setup(ambiente, iluminação, equipamentos) do experimento para encontrar resultados mais alinhados 
+        com a teoria. 
+    </p>
+
+    <h2>Conclusão</h2>
+    <p>
+        O experimento nos permitiu entender os conceitos de Mapa de Disparidade, Retificação de Imagens e Mapa de Produndidade. 
+        Foi possível aplicar o algoritmo Block Matching para gerar o mapa de disparidade a então montar o mapa de profundidade,
+        que se mostrou fiel a teoria. Contudo não foi possível reproduzir a última parte do experimento “Obstacle avoidance system”,
+        o programa não conseguiu reconhencer oss objetos em nenhuma distância isso pode ser devido a fatores externos, como iluminação,
+        ambiente ou objeto usado nas medições. 
+    </p>
+    <h2>Referências indicadas</h2>
+    <p>
+        • [1] Making A Low-Cost Stereo Camera Using OpenCV: 
+        <br />
+        <a href="https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/">"https://learnopencv.com/making-a-low-cost-stereo-camera-using-opencv/"</a>
+        <br /><br />
+        • [2] Introduction to Epipolar Geometry and Stereo Vision:
+        <br />
+        <a href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereovision/">"https://learnopencv.com/introduction-to-epipolar-geometry-and-stereovision/" </a>
+        <br /><br />
+        • [3] Stereo Camera Depth Estimation With OpenCV (Python/C++): 
+        <br />
+        <a href="https://learnopencv.com/depth-perception-using-stereo-camera-python-c/">"https://learnopencv.com/depth-perception-using-stereo-camera-python-c/" </a>
+        <br /><br />
+        • [4] C. Loop and Z. Zhang. Computing Rectifying Homographies for Stereo <br />
+        Vision. IEEE Conf. Computer Vision and Pattern Recognition, 1999.
+        <br /><br />
+        • [5] Geometry of Image Formation:
+        <br />
+        <a href="https://learnopencv.com/geometry-of-image-formation/">"https://learnopencv.com/geometry-of-image-formation/" </a>
+    </p>
+</body>
+</html>
