@@ -216,6 +216,107 @@
             <img src="diagrama_funcional_02.png" alt="digrama_funcional">
             <p class="description">diagrama funcional</p>
         </div>
+
+        <h2>Laboratorio Experimental do SPV (Lex)</h2>
+        <p>
+            O presente laboratório experimental tem como objetivo realizar a implementação prática de um sistema de reconhecimento 
+            facial para a marcação de presença dos alunos em sala de aula. Para alcançar este objetivo, serão seguidos os passos 
+            descritos a seguir:
+
+            <ul>
+                <li>Configuração do Ambiente Virtual: Preparação do ambiente de desenvolvimento utilizando o sistema operacional 
+                    Linux Ubuntu.</li>
+                <li>Cadastro dos Estudantes: Inserção dos dados e imagens dos alunos no sistema de reconhecimento facial.</li>
+                <li>Execução do Sistema: Teste do sistema para reconhecimento dos alunos durante a aula.</li>
+                <li>Finalização e Verificação: Avaliação do sistema e validação do arquivo de presença gerado.</li>
+            </ul>
+        </p>
+
+        <h3>Parte 1 - Configuração do Ambiente Virtual</h3>
+        <ol>
+            <li>
+                <strong>Obtenção dos Arquivos</strong>
+                <p>
+                    Baixe a pasta visao_computacional do repositório GitHub 
+                    <a href="https://github.com/SamirAraujo/CV-2024-2Q/tree/master/Projeto">CV-2024-2Q/Projeto.</a>
+                </p>
+            </li>
+            <li>
+                <strong>Instalação do Virtualenv</strong>
+                <p>
+                    Dentro da pasta visao_computacional, abra um terminal e execute o seguinte comando para instalar o 
+                    aplicativo que cria ambientes virtuais no Python em Linux Ubuntu:
+                </p>
+                <pre><code>sudo apt install python3-virtualenv</code></pre>
+            </li>
+            <li>
+                <strong>Criação do Ambiente Virtual</strong>
+                <p>
+                    Em seguida, crie o ambiente virtual com o comando:
+                </p>
+                <pre><code>virtualenv venv</code></pre>
+            </li>
+            <li>
+                <strong>Navegação para o Diretório do Ambiente Virtual</strong>
+                <p>
+                    Acesse o diretório do ambiente virtual com o comando:
+                </p>
+                <pre><code>cd venv</code></pre>
+            </li>
+            <li>
+                <strong>Ativação do Ambiente Virtual</strong>
+                <p>
+                    Por fim, ative o ambiente virtual executando o comando:
+                </p>
+                <pre><code>source bin/activate</code></pre>
+            </li>
+            <li>
+                <strong>Instalação de Bibliotecas</strong>
+                <p>
+                    Com o ambiente virtual configurado, execute o comando abaixo para instalar as dependências necessárias 
+                    para executar o projeto:
+                </p>
+                <pre><code>pip install -r requirements.txt</code></pre>
+            </li>
+        </ol>
+
+        <h3>Parte 2 - Cadastro dos Estudantes</h3>
+        <p>
+            Com o ambiente virtual configurado e as dependências instaladas, execute o programa cadastro.py. Este programa é 
+            responsável pelo cadastro das imagens dos estudantes.
+        </p>
+
+        <p>
+            Durante a execução do programa:
+        </p>
+
+        <ul>
+            <li>Para capturar e gravar uma imagem, pressione a tecla <strong>"x"</strong>.</li>
+            <li>É necessário fornecer um nome de arquivo no terminal para salvar a imagem.</li>
+            <li>Para encerrar a execução do programa, pressione a tecla <strong>"q"</strong>.</li>
+        </ul>
+
+        <p>
+            As imagens capturadas serão armazenadas na pasta faces, localizada no mesmo repositório do projeto.
+        </p>
+
+        <h3>Parte 3 - Execução do Sistema</h3>
+        <p>
+            Execute o programa processamento.py. Este programa é responsável por identificar os alunos cadastrados e registrar 
+            as ocorrências em um arquivo CSV, incluindo o nome e o horário do reconhecimento. Alunos que não estiverem cadastrados 
+            devem ser ignorados pelo sistema.
+        </p>
+        <ul>
+            <li>Para encerrar a execução do programa, pressione a tecla <strong>"q"</strong>.</li>
+        </ul>
+
+        <h3>Parte 4 - Finalização e Verificação</h3>
+        <p>
+            Após a conclusão da execução do programa de processamento, será gerado um arquivo CSV na pasta lista_presenca, 
+            com o nome aula_dd-mm-aaaa. Este arquivo contém o nome e o horário de reconhecimento de cada aluno que foi 
+            identificado pelo sistema.
+        </p>
+
     </div>
 </body>
 </html>
