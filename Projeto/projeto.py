@@ -7,7 +7,8 @@ import math
 import csv
 from datetime import datetime
 
-DIRECTORY = r'C:\Users\User\Desktop\Professional\Cursos e estudos\Projetos extras\cam_person_identification\faces'
+DIRECTORY = r'\faces'
+
 def face_confidence(face_distance, face_match_threshold=0.6):
     range_val = (1.0 - face_match_threshold)
     linear_val = (1.0 - face_distance) / (range_val * 2.0)
